@@ -1,0 +1,25 @@
+version: '3.9'
+
+services:
+  nginx-acme:
+    image: jaimeqian/nginx-acme:latest
+    container_name: nginx-acme
+    restart: always
+    ports:
+      - 443:443
+      - 80:80
+    volumes:
+      - acmecerts:/acmecerts
+      - certs:/etc/nginx/certs
+      - wwwroot:/usr/share/nginx
+      - html.d:/etc/nginx/html.d
+      - proxy.d:/etc/nginx/proxy.d
+      - tcp.d:/etc/nginx/tcp.d
+
+volumes:
+  acmecerts:
+  certs:
+  wwwroot:
+  html.d:
+  proxy.d:
+  tcp.d:
