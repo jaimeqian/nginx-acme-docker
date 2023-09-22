@@ -1,17 +1,30 @@
-
 stream {
-    # 添加socket转发的代理
-    upstream socket_proxy {
+    upstream socket_proxy1 {  #当有多个配置都含有upstream记录时，请修改 socket_proxy1 为唯一值
+        # 负载均衡模式，只可开启一种start
+        #least_conn;
         hash $remote_addr consistent;
-        # 转发的目的地址和端口
+        # 负载均衡模式end
+
+        # 转发的目的地址和端口，多条服务器为负载均衡。5s内出现3次错误，该服务器将被熔断30s
         server 127.0.0.1:9000 weight=5 max_fails=3 fail_timeout=30s;
+        #server 127.0.0.2:9000 weight=5 max_fails=3 fail_timeout=30s;
+
     }
 
-    # 提供转发的服务，即访问localhost:9001，会跳转至代理socket_proxy指定的转发地址
+    # 提供转发的服务，即访问localhost:9001，会跳转至代理socket_proxy1指定的转发服务器
     server {
        listen 9001;
-       proxy_connect_timeout 1s;
-       proxy_timeout 3s;
-       proxy_pass socket_proxy;
+       proxy_pass socket_proxy1;
+
+       proxy_connect_timeout 1s;  # 与被代理服务器建立连接的超时时间为5s
+       proxy_timeout 3s;   # 获取被代理服务器的响应最大超时时间为10s
+
+       #需要负载均衡时开启下面选项start
+       #proxy_next_upstream on;  # 当被代理的服务器返回错误或超时时，将未返回响应的客户端连接请求传递给upstream中的下一个服务器
+       #proxy_next_upstream_tries 3;   # 转发尝试请求最多3次
+       #proxy_next_upstream_timeout 10s;    # 总尝试超时时间为10s
+       #proxy_socket_keepalive on;  # 开启SO_KEEPALIVE选项进行心跳检测
+       #负载均衡end
+
     }
 }
