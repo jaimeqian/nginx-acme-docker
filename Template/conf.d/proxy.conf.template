@@ -45,7 +45,7 @@ server {
       #proxy_set_header X-Real-IP $remote_addr;
       #proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
       #proxy_set_header X-Forwarded-Proto https; # 如果您在反向代理上启用了 HTTPS
-    }
+    #}
 
     # redirect server error pages to the static page /50x.html
     #
