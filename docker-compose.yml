@@ -10,16 +10,12 @@ services:
       - 80:80
     volumes:
       - acmecerts:/acmecerts
-      - certs:/etc/nginx/certs
-      - wwwroot:/usr/share/nginx
-      - html.d:/etc/nginx/html.d
-      - proxy.d:/etc/nginx/proxy.d
-      - tcp.d:/etc/nginx/tcp.d
+      - nginx-conf:/nginx-conf
+      - log:/var/log
 
 volumes:
   acmecerts:
-  certs:
-  wwwroot:
-  html.d:
-  proxy.d:
-  tcp.d:
+  nginx-conf:
+  log:
+
+
