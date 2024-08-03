@@ -1,5 +1,5 @@
 stream {
-    upstream socket_proxy1 {  #当有多个配置都含有upstream记录时，请修改 socket_proxy1 为唯一值
+    upstream myservergroup {  #当有多个配置都含有upstream记录时，请修改 myservergroup 为唯一值
         # 负载均衡模式，只可开启一种start
         #least_conn;
         hash $remote_addr consistent;
@@ -14,7 +14,7 @@ stream {
     # 提供转发的服务，即访问localhost:9001，会跳转至代理socket_proxy1指定的转发服务器
     server {
        listen 9001;
-       proxy_pass socket_proxy1;
+       proxy_pass myservergroup;
 
        proxy_connect_timeout 1s;  # 与被代理服务器建立连接的超时时间为5s
        proxy_timeout 3s;   # 获取被代理服务器的响应最大超时时间为10s

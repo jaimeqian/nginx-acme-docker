@@ -1,4 +1,4 @@
-FROM nginx:1.23.4-alpine
+FROM nginx:1.25.5-alpine
 
 # Install dependencies
 RUN apk add --no-cache openssl socat bash
